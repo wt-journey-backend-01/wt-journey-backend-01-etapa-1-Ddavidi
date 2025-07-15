@@ -45,6 +45,25 @@ app.post('/contato', (req, res) => {
   `);
 });
 
+// json api lanches
+const fs = require('fs');
+
+app.get('/api/lanches', (req, res) => {
+  const filePath = path.join(__dirname, 'public', 'data', 'lanches.json');
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ erro: 'Erro ao ler os lanches' });
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(data);
+  });
+});
+
+// pagina 404
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+});
+
 
 // Inicia o servidor
 app.listen(PORT, () => {
